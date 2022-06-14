@@ -27,7 +27,7 @@ import itertools
 import math
 import jieba
 import pickle
-from config import *
+from config_example import *
 
 
 class Voc:
@@ -212,7 +212,7 @@ def outputVar(l, voc):
     mask = binaryMatrix(padList)
     mask = torch.ByteTensor(mask)
     padVar = torch.LongTensor(padList)
-    return padVar, mask, max_target_len
+    return padVar, mask.bool(), max_target_len
 
 
 # Returns all items for a given batch of pairs
@@ -244,7 +244,7 @@ class EncoderRNN(nn.Module):
         # Convert word indexes to embeddings
         embedded = self.embedding(input_seq)
         # Pack padded batch of sequences for RNN module
-        packed = torch.nn.utils.rnn.pack_padded_sequence(embedded, input_lengths)
+        packed = torch.nn.utils.rnn.pack_padded_sequence(embedded, input_lengths.cpu())
         # Forward pass through GRU
         outputs, hidden = self.gru(packed, hidden)
         # Unpack padding
@@ -459,7 +459,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
     start_iteration = 1
     print_loss = 0
     if loadFilename:
-        checkpoint = torch.load(loadFilename)
+        checkpoint = torch.load(loadFilename,map_location='cpu')
         start_iteration = checkpoint['iteration'] + 1
 
     # Training loop
@@ -579,7 +579,7 @@ def evaluateInput(searcher, voc):
         if input_sentence == 'q' or input_sentence == 'quit': break
         res = generateAnswer(input_sentence, searcher, voc)
         if lang == "cn":
-            print('学长: ', res)
+            print('Bot: ', res)
         else:
             print('Bot:', res)
 
@@ -618,7 +618,7 @@ def initGenModel():
     # Load model if a loadFilename is provided
     if loadFilename:
         # If loading on same machine the model was trained on
-        checkpoint = torch.load(loadFilename)
+        checkpoint = torch.load(loadFilename,map_location='cpu')
         # If loading a model trained on GPU to CPU
         # checkpoint = torch.load(loadFilename, map_location=torch.device('cpu'))
         encoder_sd = checkpoint['en']
@@ -626,7 +626,7 @@ def initGenModel():
         embedding_sd = checkpoint['embedding']
         voc.__dict__ = checkpoint['voc_dict']
 
-    print('Building encoder and decoder ...')
+    # print('Building encoder and decoder ...')
     # Initialize word embeddings
     embedding = nn.Embedding(voc.num_words, hidden_size)
 

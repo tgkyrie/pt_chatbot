@@ -11,7 +11,7 @@ import os, re, pickle, random
 import jieba
 import pandas as pd
 from model import Voc, filterPairs, trimRareWords, batch2TrainData
-from config import *
+from config_example import *
 
 
 # Lowercase, trim, and remove non-letter characters

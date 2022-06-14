@@ -42,7 +42,7 @@ if mode == "train":
                 state[k] = v.cuda()
 
     if loadFilename:
-        checkpoint = torch.load(loadFilename)
+        checkpoint = torch.load(loadFilename,map_location=torch.device('cpu'))
         encoder_optimizer_sd = checkpoint['en_opt']
         decoder_optimizer_sd = checkpoint['de_opt']
         encoder_optimizer.load_state_dict(encoder_optimizer_sd)

@@ -10,7 +10,7 @@
 import numpy as np
 import pickle
 from model import Voc
-from config import *
+from config_example import *
 
 words = []
 idx = 0

@@ -26,9 +26,9 @@ clip = 50.0
 teacher_forcing_ratio = 1.0
 learning_rate = 0.0001
 decoder_learning_ratio = 5.0
-n_iteration = 20000  # epoch，训练次数
-print_every = 1
-save_every = 500
+n_iteration = 80000  # epoch，训练次数
+print_every = 1000
+save_every = 5000
 
 # Configure models
 model_name = 'cb_model'
@@ -45,21 +45,24 @@ batch_size = 64
 lang = "cn"  # cn为中文，填写其他则默认为英文
 corpus_name = "baiqi"
 # corpus_name = "cornell movie-dialogs corpus"
-checkpoint_iter = 20000  # 上次保存模型时的训练步数
-loadFilename = None  # 初始训练时设置为None
-# loadFilename = os.path.join('data/save', model_name, corpus_name,
-#                             '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size),
-#                             '{}_checkpoint.tar'.format(checkpoint_iter))
-fastTextEmb = os.path.join('data/embedding/', 'wiki.zh.align.vec')  # fastText embedding 文件地址
+checkpoint_iter = 75000  # 上次保存模型时的训练步数
+# loadFilename = None  # 初始训练时设置为None
+loadFilename = os.path.join('data/save', model_name, corpus_name,
+                            '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size),
+                            '{}_checkpoint.tar'.format(checkpoint_iter))
+fastTextEmb = os.path.join('data/embedding/', 'wiki.zh.vec')  # fastText embedding 文件地址
 fastTextGensim = os.path.join('data/embedding', 'gensim_fasttext.mod')  # gensim加载fasttext后的模型
 embeddingFile = os.path.join('data', 'embedding_bq.pkl')  # 从fastText的embedding中过滤处理过要用的embedding文件
+# embeddingFile=None
 sentEmbFile  = os.path.join('data', 'sent_emb.pkl')  # 存储计算好的句子向量文件
 vocFile = os.path.join('data', 'voc_bq.pkl')
 pairsFile = os.path.join('data', 'pairs_bq.pkl')
-dialogFile = os.path.join('data', 'baiqi.txt')
+# dialogFile = os.path.join('data', 'baiqi.txt')
+dialogFile=os.path.join('data','std_xhj_data.txt')
 annoyIdxFile = os.path.join('data', 'sent_emb_idx.ann')
 ballTreeIdxFile = os.path.join('data', 'sent_imb_idx.tre')
-mode = "train"
+# mode = "train"
+mode='evaluate'
 debug_gen = False  # 是否开启生成模型的debug模式
 debug_ret = False  # 是否开启检索模型的debug模式
 debug_hyb = True  # 是否开启混合模型的debug模式

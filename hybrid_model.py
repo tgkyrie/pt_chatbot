@@ -7,7 +7,7 @@
 @comments: 生成+检索混合模型
 """
 
-from config import *
+from config_example import *
 from model import *
 from utils import *
 import warnings, sys
